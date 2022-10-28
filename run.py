@@ -24,6 +24,8 @@ MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", default=None)
 
 HA_DISCOVERY_PREFIX = os.getenv("HA_DISCOVERY_PREFIX", "homeassistant")
 
+PUBLISHED_DEVICES = []
+
 
 class FakeHassServices(object):
     def __init__(self, client):
@@ -75,12 +77,14 @@ def on_message(client, userdata, msg):
     logger.debug(f"MQTT: Message received: {str(event)}")
     logger.debug(f"MQTT: Message topic: {msg.topic}, qos: {msg.qos}, retain flag: {msg.retain}")
 
+    event_src = event.get('src', None)
+
     if msg.topic == "shellies_discovery/rpc":
         exec(
             compiled,
             {
                 "data": {
-                    'id': event.get('src'),
+                    'id': event_src,
                     'device_config': event.get('result'),
                     'discovery_prefix': HA_DISCOVERY_PREFIX,
                 },
@@ -88,14 +92,43 @@ def on_message(client, userdata, msg):
                 "hass": FakeHass(client),
             },
         )
+
+        # Note this as a configured device
+        PUBLISHED_DEVICES.append(event_src)
+
+    elif event_src is not None:
+        """
+        Since Shelly doesn't provide us with a global 'is there anyone out there' in gen2
+        (sigh), try to get devices to post their configs as we see them.
+        But only once per device.
+        """
+        if event_src not in PUBLISHED_DEVICES:
+            command_rpc_topic = f"{SHELLEY_ANNOUNCE_MQTT_PREFIX}/{event_src}/rpc"
+
+            (result, mid) = client.publish(
+                command_rpc_topic,
+                json.dumps({
+                    "id": 1,
+                    "src": MQTT_CLIENT_ID,
+                    "method": "Shelly.GetConfig",
+                }),
+                qos=2,
+            )
+            if result != 0:
+                logger.error(f"MQTT: Error publishing Shelly.GetConfig, result: {result}, topic: {command_rpc_topic}")
+            else:
+                logger.info(f"MQTT: Published Shelly.GetConfig, topic: {command_rpc_topic}")
+                # Note this as a configured device
+                PUBLISHED_DEVICES.append(event_src)
+                logger.debug(f"PUBLISHED_DEVICES = {PUBLISHED_DEVICES}")
+
     else:
-        # FIXME: Need to try to dected any devices we see activity from and publish
-        # a "Shelly.GetConfig" call to their RPC address.
-        # Ex:  {"id": 1, "src":"shellies_discovery", "method":"Shelly.GetConfig"}
-        pass
+        logger.warning(f"MQTT: Message without src.  Topic: {msg.topic}")
 
 
 def run():
+    logger.debug("DEBUG logging enabled.")
+
     if MQTT_BROKER is None:
         raise Exception("MQTT_BROKER must be defined.")
 
