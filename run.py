@@ -11,10 +11,10 @@ log_handler = logging.StreamHandler()
 log_formatter = logging.Formatter('%(asctime)s [%(name)-12s] %(levelname)-8s %(message)s')
 log_handler.setFormatter(log_formatter)
 logger.addHandler(log_handler)
-logger.setLevel(os.environ.get('LOG_LEVEL', 'INFO').upper())
+logger.setLevel(os.getenv('LOG_LEVEL', default='INFO').upper())
 
 
-SHELLEY_ANNOUNCE_MQTT_PREFIX = os.getenv("SHELLEY_ANNOUNCE_MQTT_PREFIX", "shellies")
+SHELLEY_ANNOUNCE_MQTT_PREFIX = os.getenv("SHELLEY_ANNOUNCE_MQTT_PREFIX", default="shellies")
 
 MQTT_BROKER = os.getenv("MQTT_BROKER", default="mqtt")
 MQTT_PORT = os.getenv("MQTT_PORT", default=8883)
@@ -22,7 +22,7 @@ MQTT_CLIENT_ID = os.getenv("MQTT_CLIENT_ID", default=f"ha-shellies-discovery-gen
 MQTT_USERNAME = os.getenv("MQTT_USERNAME", default=None)
 MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", default=None)
 
-HA_DISCOVERY_PREFIX = os.getenv("HA_DISCOVERY_PREFIX", "homeassistant")
+HA_DISCOVERY_PREFIX = os.getenv("HA_DISCOVERY_PREFIX", default="homeassistant")
 
 PUBLISHED_DEVICES = []
 
