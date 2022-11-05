@@ -1,13 +1,20 @@
-let CONFIG = { topic_prefix: null };
+let topic_prefix = null;
+let installed_version = null;
 
 Shelly.call("MQTT.GetConfig", {}, function (config) {
-    CONFIG.topic_prefix = config.topic_prefix;
+    topic_prefix = config.topic_prefix;
 });
 
 function SendDeviceStatus() {
+    let _device_info = Shelly.getDeviceInfo();
+    installed_version = _device_info.ver;
     Shelly.call("Shelly.GetStatus", {}, function (status) {
-        MQTT.publish(CONFIG.topic_prefix + "/status/rpc", JSON.stringify({ "result": status }));
+        status.sys.installed_version = installed_version;
+        status.sys.model = model;
+        MQTT.publish(topic_prefix + "/status/rpc", JSON.stringify(status));
     });
 }
 
-let UpdateTimer = Timer.set(300000, true, SendDeviceStatus);
+
+MQTT.setConnectHandler(SendDeviceStatus)
+let UpdateTimer = Timer.set(30000, true, SendDeviceStatus);
