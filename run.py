@@ -17,12 +17,12 @@ logger.setLevel(os.getenv("LOG_LEVEL", default="INFO").upper())
 
 
 SHELLEY_ANNOUNCE_MQTT_PREFIX = os.getenv(
-    "SHELLEY_ANNOUNCE_MQTT_PREFIX", default="shellies"
+    "SHELLEY_ANNOUNCE_MQTT_PREFIX", default="shellies-gen2"
 )
 
 MQTT_BROKER = os.getenv("MQTT_BROKER", default="mqtt")
 MQTT_PORT = os.getenv("MQTT_PORT", default=8883)
-MQTT_CLIENT_ID = os.getenv("MQTT_CLIENT_ID", default=f"ha-shellies-discovery-gen2")
+MQTT_CLIENT_ID = os.getenv("MQTT_CLIENT_ID", default="ha-shellies-discovery-gen2")
 MQTT_USERNAME = os.getenv("MQTT_USERNAME", default=None)
 MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", default=None)
 
