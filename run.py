@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import certifi
 
+import time
 import json
 import logging
 import os
@@ -19,6 +20,7 @@ logger.setLevel(os.getenv("LOG_LEVEL", default="INFO").upper())
 SHELLEY_ANNOUNCE_MQTT_PREFIX = os.getenv(
     "SHELLEY_ANNOUNCE_MQTT_PREFIX", default="shellies-gen2"
 )
+SHELLEY_REDISCOVERY_INTERVAL = 24 * 60 * 60  # 24 hours
 
 MQTT_BROKER = os.getenv("MQTT_BROKER", default="mqtt")
 MQTT_PORT = os.getenv("MQTT_PORT", default=8883)
@@ -28,7 +30,7 @@ MQTT_PASSWORD = os.getenv("MQTT_PASSWORD", default=None)
 
 HA_DISCOVERY_PREFIX = os.getenv("HA_DISCOVERY_PREFIX", default="homeassistant")
 
-PUBLISHED_DEVICES = []
+PUBLISHED_DEVICES = {}
 
 
 class FakeHassServices(object):
@@ -92,6 +94,7 @@ def on_message(client, userdata, msg):
     logger.debug(f"MQTT: Message received: {str(event)}")
 
     event_src = event.get("src", None)
+    epoch = int(time.time())
 
     if msg.topic == "shellies_discovery/rpc":
         ha_discovery_payload = {
@@ -111,22 +114,22 @@ def on_message(client, userdata, msg):
         )
 
         # Note this as a configured device
-        PUBLISHED_DEVICES.append(event_src)
+        PUBLISHED_DEVICES[event_src] = epoch
 
     elif event_src is not None:
         """
         Since Shelly doesn't provide us with a global 'is there anyone out there' in gen2
         (sigh), try to get devices to post their configs as we see them.
-        But only once per device.
+        But only once per device per SHELLEY_REDISCOVERY_INTERVAL.
         """
-        if event_src not in PUBLISHED_DEVICES:
+        if epoch > SHELLEY_REDISCOVERY_INTERVAL + PUBLISHED_DEVICES.get(event_src, 0):
             command_rpc_topic = f"{SHELLEY_ANNOUNCE_MQTT_PREFIX}/{event_src}/rpc"
 
             (result, mid) = client.publish(
                 command_rpc_topic,
                 json.dumps(
                     {
-                        "id": 1,
+                        "id": epoch,
                         "src": "shellies_discovery",
                         "method": "Shelly.GetConfig",
                     }
@@ -142,7 +145,7 @@ def on_message(client, userdata, msg):
                     f"MQTT: Published Shelly.GetConfig, topic: {command_rpc_topic}"
                 )
                 # Note this as a configured device
-                PUBLISHED_DEVICES.append(event_src)
+                PUBLISHED_DEVICES[event_src] = epoch
                 logger.debug(f"PUBLISHED_DEVICES = {PUBLISHED_DEVICES}")
 
     else:
