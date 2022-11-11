@@ -51,6 +51,10 @@ class FakeHassServices(object):
                 logger.info(
                     f"MQTT: Published discovery, topic: {service_data.get('topic')}"
                 )
+        else:
+            logger.warn(
+                f"FakeHassServices: Unhandled service/action pair: {service}/{action}"
+            )
 
 
 class FakeHass(object):
@@ -90,14 +94,17 @@ def on_message(client, userdata, msg):
     event_src = event.get("src", None)
 
     if msg.topic == "shellies_discovery/rpc":
+        ha_discovery_payload = {
+            "id": event_src,
+            "device_config": event.get("result"),
+            "discovery_prefix": HA_DISCOVERY_PREFIX,
+        }
+        logger.debug(f"ha_discovery_payload: {ha_discovery_payload}")
+
         exec(
             compiled,
             {
-                "data": {
-                    "id": event_src,
-                    "device_config": event.get("result"),
-                    "discovery_prefix": HA_DISCOVERY_PREFIX,
-                },
+                "data": ha_discovery_payload,
                 "logger": logger,
                 "hass": FakeHass(client),
             },
@@ -120,7 +127,7 @@ def on_message(client, userdata, msg):
                 json.dumps(
                     {
                         "id": 1,
-                        "src": MQTT_CLIENT_ID,
+                        "src": "shellies_discovery",
                         "method": "Shelly.GetConfig",
                     }
                 ),
