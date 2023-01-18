@@ -48,21 +48,23 @@ If the MQTT broker port configuration is set to 8883 then the connector will aut
         -e MQTT_PASSWORD=secret \
         docker.io/jlrgraham/ha-shellies-discovery-gen2:latest
 
-### Kubernetes StatefulSet
+### Kubernetes Deployment
 
 Assuming that a Kubernetes secret with the MQTT username and password has been created at `ha-shellies-discovery-auth`:
 
     ---
     apiVersion: apps/v1
-    kind: StatefulSet
+    kind: Deployment
     metadata:
       name: ha-shellies-discovery-gen2
     spec:
+      replicas: 1
+      revisionHistoryLimit: 0
       selector:
         matchLabels:
           app: ha-shellies-discovery-gen2
-      serviceName: ha-shellies-discovery-gen2
-      replicas: 1
+      strategy:
+        type: Recreate
       template:
         metadata:
           labels:
