@@ -6,6 +6,9 @@
 [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 [![PayPal_Me][paypal-me-shield]][paypal-me]
 
+## :warning:  WARNING
+Please do not update firmware to `0.12.0` if you are using `consumption type` for relays. The new firmware does not handle `consumption type` correctly.
+
 This script adds MQTT discovery support for Shelly Gen2 devices in the [Home Assistant](https://home-assistant.io/).
 
 ![image](https://user-images.githubusercontent.com/478555/151659020-a6181434-ae19-42bb-9dbe-fed8002ee730.png)
@@ -30,6 +33,9 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Plus 2PM
 - Shelly Plus H&T
 - Shelly Plus I4
+- Shelly Plus Plug S
+- Shelly Plus Plug US
+- Shelly Plus Smoke
 - Shelly Plus Wall Dimmer
 - Shelly Pro 1
 - Shelly Pro 1PM
