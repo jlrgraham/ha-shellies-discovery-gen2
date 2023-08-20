@@ -1,7 +1,7 @@
 [![Community Forum][forum-shield]][forum]  [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]  [![PayPal_Me][paypal-me-shield]][paypal-me]
 
 ## :warning:  WARNING
-Please do not update firmware to `0.12.0` if you are using `consumption type` for relays. The new firmware does not handle `consumption type` correctly.
+Firmware `0.12.x`, `0.13.x` and `0.14.x` don't support `consumption type` for relays.
 
 This script adds MQTT discovery support for Shelly Gen2 devices in the [Home Assistant](https://home-assistant.io/).
 
@@ -22,12 +22,18 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 ## Supported devices
 
 - Shelly Plus 1
+- Shelly Plus 1 Mini
 - Shelly Plus 1PM
+- Shelly Plus 1PM Mini
 - Shelly Plus 2PM
+- Shelly Plus Add-on
 - Shelly Plus H&T
 - Shelly Plus I4
+- Shelly Plus Plug IT
 - Shelly Plus Plug S
+- Shelly Plus Plug UK
 - Shelly Plus Plug US
+- Shelly Plus PM Mini
 - Shelly Plus Smoke
 - Shelly Plus Wall Dimmer
 - Shelly Pro 1
@@ -35,7 +41,11 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Pro 2
 - Shelly Pro 2PM
 - Shelly Pro 3
+- Shelly Pro 3EM
 - Shelly Pro 4PM
+- Shelly Pro Dual Cover PM
+- Shelly Pro EM
+- Shelly Wall Display
 
 ## Battery powered devices
 
@@ -61,6 +71,9 @@ logger:
 
 - binary sensor
 - button
+- cover
+- device trigger
+- event
 - fan
 - light
 - sensor
@@ -80,6 +93,7 @@ logger:
 key | optional | type | default | description
 -- | -- | -- | -- | --
 `discovery_prefix` | True | string | `homeassistant` | MQTT discovery prefix
+`script_prefix` | True | string | | MQTT prefix to install the script in the device
 `qos` | True | integer | `0` | MQTT QoS, you can use `0`, `1` or `2`
 
 ## Configuration
@@ -96,9 +110,9 @@ python_script:
       event: start
   variables:
     device_info_payload:  "{{ {'id': 1, 'src':'shellies_discovery', 'method':'Shelly.GetConfig'} | to_json }}"
-    device_ids:  # enter the list of device IDs here
+    device_ids:  # enter the list of device IDs (MQTT prefixes) here
       - shellyplus2pm-485519a1ff8c
-      - shellyplus1pm-112233445566
+      - custom-prefix/shelly-kitchen
   action:
     - repeat:
         for_each: "{{ device_ids }}"
