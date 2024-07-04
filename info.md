@@ -1,9 +1,7 @@
 [![Community Forum][forum-shield]][forum]  [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]  [![PayPal_Me][paypal-me-shield]][paypal-me]
 
-## :warning:  WARNING
-Firmware `0.12.x`, `0.13.x` and `0.14.x` don't support `consumption type` for relays.
 
-This script adds MQTT discovery support for Shelly Gen2 devices in the [Home Assistant](https://home-assistant.io/).
+This script adds MQTT discovery support for Shelly Gen2 and Gen3 devices in the [Home Assistant](https://home-assistant.io/).
 
 ![image](https://user-images.githubusercontent.com/478555/151659044-47afc47e-5235-42e9-bd2c-007cf7a8de90.png)
 
@@ -11,7 +9,9 @@ This script adds MQTT discovery support for Shelly Gen2 devices in the [Home Ass
 
 This script needs Home Assistant `python_script` component so, if you never used it, I strongly suggest you to follow the [official instruction](https://www.home-assistant.io/integrations/python_script#writing-your-first-script) and check that `python_script` is properly configured and it's working.
 
-For the device to work with the script, it must have MQTT configured and options **RPC status notifications over MQTT** and **Generic status update over MQTT** enabled.
+For the device to work with the script, it must have MQTT configured and options **Enable "MQTT Control"**, **RPC status notifications over MQTT** and **Generic status update over MQTT** enabled.
+
+MQTT integration must be configured in Home Assistant.
 
 ## Installation
 
@@ -21,6 +21,14 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 
 ## Supported devices
 
+- Shelly 1 Gen3
+- Shelly 1PM Gen3
+- Shelly 1 Mini Gen3
+- Shelly 1PM Mini Gen3
+- Shelly Dimmer 0/1-10V PM Gen3
+- Shelly H&T Gen3
+- Shelly I4 Gen3
+- Shelly PM Mini Gen3
 - Shelly Plus 1
 - Shelly Plus 1 Mini
 - Shelly Plus 1PM
@@ -34,6 +42,7 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Plus Plug UK
 - Shelly Plus Plug US
 - Shelly Plus PM Mini
+- Shelly Plus RGBW PM (RGBW profile is not supported)
 - Shelly Plus Smoke
 - Shelly Plus Wall Dimmer
 - Shelly Pro 1
@@ -42,10 +51,13 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Pro 2PM
 - Shelly Pro 3
 - Shelly Pro 3EM
+- Shelly Pro 3EM Switch Add-on
 - Shelly Pro 4PM
+- Shelly Pro Dimmer 2
 - Shelly Pro Dual Cover PM
 - Shelly Pro EM
-- Shelly Wall Display
+- Shelly Wall Display (relay and thermostat mode)
+- Shelly X MOD1
 
 ## Battery powered devices
 
@@ -61,16 +73,18 @@ To debug the script add this to your `logger` configuration:
 ```yaml
 # configuration.yaml file
 logger:
-  default: warning
+  default: error
   logs:
     homeassistant.components.python_script: debug
     homeassistant.components.automation: info
+    homeassistant.components.mqtt.discovery: info
 ```
 
 ## Supported platforms
 
 - binary sensor
 - button
+- climate
 - cover
 - device trigger
 - event
@@ -134,6 +148,10 @@ python_script:
     data:
       id: "{{ trigger.payload_json.src }}"
       device_config: "{{ trigger.payload_json.result }}"
+  - service: mqtt.publish
+    data:
+      topic: "{{ trigger.payload_json.result.mqtt.topic_prefix }}/command"
+      payload: "status_update"
 ```
 
 [forum]: https://community.home-assistant.io/t/shellies-discovery-gen2-script/384479
