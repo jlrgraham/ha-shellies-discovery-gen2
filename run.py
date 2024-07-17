@@ -17,10 +17,10 @@ logger.addHandler(log_handler)
 logger.setLevel(os.getenv("LOG_LEVEL", default="INFO").upper())
 
 
-SHELLEY_ANNOUNCE_MQTT_PREFIX = os.getenv(
-    "SHELLEY_ANNOUNCE_MQTT_PREFIX", default="shellies-gen2"
+SHELLY_ANNOUNCE_MQTT_PREFIX = os.getenv(
+    "SHELLY_ANNOUNCE_MQTT_PREFIX", default="shellies-gen2"
 )
-SHELLEY_REDISCOVERY_INTERVAL = 24 * 60 * 60  # 24 hours
+SHELLY_REDISCOVERY_INTERVAL = 24 * 60 * 60  # 24 hours
 
 MQTT_BROKER = os.getenv("MQTT_BROKER", default="mqtt")
 MQTT_PORT = os.getenv("MQTT_PORT", default=8883)
@@ -75,7 +75,7 @@ compiled = compile(source, filename=filename, mode="exec")
 def on_connect(client, userdata, flags, reason_code, properties):
     if reason_code == 0:
         logger.info("MQTT: Connected to broker.")
-        announce_subscribe = f"{SHELLEY_ANNOUNCE_MQTT_PREFIX}/+/events/rpc"
+        announce_subscribe = f"{SHELLY_ANNOUNCE_MQTT_PREFIX}/+/events/rpc"
         logger.info(f"MQTT: Subscribe: {announce_subscribe}")
         client.subscribe(announce_subscribe)
 
@@ -120,10 +120,10 @@ def on_message(client, userdata, msg):
         """
         Since Shelly doesn't provide us with a global 'is there anyone out there' in gen2
         (sigh), try to get devices to post their configs as we see them.
-        But only once per device per SHELLEY_REDISCOVERY_INTERVAL.
+        But only once per device per SHELLY_REDISCOVERY_INTERVAL.
         """
-        if epoch > SHELLEY_REDISCOVERY_INTERVAL + PUBLISHED_DEVICES.get(event_src, 0):
-            command_rpc_topic = f"{SHELLEY_ANNOUNCE_MQTT_PREFIX}/{event_src}/rpc"
+        if epoch > SHELLY_REDISCOVERY_INTERVAL + PUBLISHED_DEVICES.get(event_src, 0):
+            command_rpc_topic = f"{SHELLY_ANNOUNCE_MQTT_PREFIX}/{event_src}/rpc"
 
             (result, mid) = client.publish(
                 command_rpc_topic,
