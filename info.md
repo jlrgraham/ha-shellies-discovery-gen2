@@ -1,7 +1,7 @@
-[![Community Forum][forum-shield]][forum]  [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]  [![PayPal_Me][paypal-me-shield]][paypal-me]
+[![Community Forum][forum-shield]][forum]  [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]  [![PayPal_Me][paypal-me-shield]][paypal-me]  [![Revolut.Me][revolut-me-shield]][revolut-me]
 
 
-This script adds MQTT discovery support for Shelly Gen2 and Gen3 devices in the [Home Assistant](https://home-assistant.io/).
+This script adds MQTT discovery support for Shelly Gen2, Gen3 and Gen4 devices in the [Home Assistant](https://home-assistant.io/).
 
 ![image](https://user-images.githubusercontent.com/478555/151659044-47afc47e-5235-42e9-bd2c-007cf7a8de90.png)
 
@@ -21,14 +21,10 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 
 ## Supported devices
 
-- Shelly 1 Gen3
-- Shelly 1PM Gen3
-- Shelly 1 Mini Gen3
-- Shelly 1PM Mini Gen3
-- Shelly Dimmer 0/1-10V PM Gen3
-- Shelly H&T Gen3
-- Shelly I4 Gen3
-- Shelly PM Mini Gen3
+### Gen2
+
+- Shelly BLU Gateway
+- Shelly Plus 0-10V Dimmer
 - Shelly Plus 1
 - Shelly Plus 1 Mini
 - Shelly Plus 1PM
@@ -36,7 +32,7 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Plus 2PM
 - Shelly Plus Add-on
 - Shelly Plus H&T
-- Shelly Plus I4
+- Shelly Plus i4
 - Shelly Plus Plug IT
 - Shelly Plus Plug S
 - Shelly Plus Plug UK
@@ -44,6 +40,7 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Plus PM Mini
 - Shelly Plus RGBW PM (RGBW profile is not supported)
 - Shelly Plus Smoke
+- Shelly Plus Uni
 - Shelly Plus Wall Dimmer
 - Shelly Pro 1
 - Shelly Pro 1PM
@@ -52,12 +49,66 @@ Shellies Discovery Gen2 will automatically install/update the script on your She
 - Shelly Pro 3
 - Shelly Pro 3EM
 - Shelly Pro 3EM Switch Add-on
+- Shelly Pro 3EM-3CT63
+- Shelly Pro 3EM-400
 - Shelly Pro 4PM
 - Shelly Pro Dimmer 2
 - Shelly Pro Dual Cover PM
 - Shelly Pro EM
-- Shelly Wall Display (relay and thermostat mode)
+- Shelly Wall Display
+- Shelly Wall Display X2
+
+### Gen3
+
+- Shelly 1 Gen3
+- Shelly 1L Gen3
+- Shelly 1 Mini Gen3
+- Shelly 1PM Gen3
+- Shelly 1PM Mini Gen3
+- Shelly 2L Gen3
+- Shelly 2PM Gen3
+- Shelly 3EM-63 Gen3
+- Shelly AZ Plug
+- Shelly BLU Gateway Gen3
+- Shelly DALI Dimmer Gen3
+- Shelly Dimmer 0/1-10V PM Gen3
+- Shelly Dimmer Gen3
+- Shelly Duo Bulb Gen3
+- Shelly EM Gen3
+- Shelly H&T Gen3
+- Shelly i4 Gen3
+- Shelly Outdoor Plug S Gen3
+- Shelly Plug S Gen3
+- Shelly PM Mini Gen3
 - Shelly X MOD1
+
+### Gen4
+
+- Shelly 1 Gen4
+- Shelly 1 Mini Gen4
+- Shelly 1PM Gen4
+- Shelly 1PM Mini Gen4
+- Shelly 2PM Gen4
+- Shelly i4 Gen4
+- Shelly Flood Gen4
+- Shelly Power Strip Gen4
+- Shelly Presence Gen4
+
+### BLU
+
+- Shelly BLU Button1 (via Shelly Pro or Gen3+ device)
+- Shelly BLU H&T (via Shelly Pro or Gen3+ device)
+- Shelly BLU Motion (via Shelly Pro or Gen3+ device)
+- Shelly BLU RC Button 4 (via Shelly Pro or Gen3+ device)
+- Shelly BLU TRV (via Shelly BLU Gateway Gen3)
+- Shelly BLU Wall Switch 4 (via Shelly Pro or Gen3+ device)
+
+### Powered by Shelly
+
+- FrankEver Smart Water Valve
+- LinkedGo Smart Thermostat ST1820
+- LinkedGo Smart Thermostat ST802-B
+- Ogemray 25A Smart Switch
 
 ## Battery powered devices
 
@@ -90,6 +141,7 @@ logger:
 - event
 - fan
 - light
+- number
 - sensor
 - switch
 - update
@@ -119,39 +171,46 @@ python_script:
 # automations.yaml file
 - id: shellies_announce_gen2
   alias: "Shellies Announce Gen2"
-  trigger:
-    - platform: homeassistant
+  triggers:
+    - trigger: homeassistant
       event: start
   variables:
-    device_info_payload:  "{{ {'id': 1, 'src':'shellies_discovery', 'method':'Shelly.GetConfig'} | to_json }}"
+    get_config_payload:  "{{ {'id': 1, 'src':'shellies_discovery', 'method':'Shelly.GetConfig'} | to_json }}"
+    get_components_payload: "{{ {'id': 1, 'src': 'shellies_discovery', 'method':'Shelly.GetComponents', 'params': {'include': ['config']}} | to_json }}"
     device_ids:  # enter the list of device IDs (MQTT prefixes) here
       - shellyplus2pm-485519a1ff8c
       - custom-prefix/shelly-kitchen
-  action:
+  actions:
     - repeat:
         for_each: "{{ device_ids }}"
         sequence:
-          - service: mqtt.publish
+          - action: mqtt.publish
             data:
               topic: "{{ repeat.item }}/rpc"
-              payload: "{{ device_info_payload }}"
+              payload: "{{ get_config_payload }}"
+          - action: mqtt.publish
+            data:
+              topic: "{{ repeat.item }}/rpc"
+              payload: "{{ get_components_payload }}"
 
 - id: shellies_discovery_gen2
   alias: "Shellies Discovery Gen2"
   mode: queued
   max: 999
-  trigger:
-  - platform: mqtt
-    topic: shellies_discovery/rpc
-  action:
-  - service: python_script.shellies_discovery_gen2
-    data:
-      id: "{{ trigger.payload_json.src }}"
-      device_config: "{{ trigger.payload_json.result }}"
-  - service: mqtt.publish
-    data:
-      topic: "{{ trigger.payload_json.result.mqtt.topic_prefix }}/command"
-      payload: "status_update"
+  triggers:
+    - trigger: mqtt
+      topic: shellies_discovery/rpc
+  actions:
+    - action: python_script.shellies_discovery_gen2
+      data:
+        id: "{{ trigger.payload_json.src }}"
+        device_config: "{{ trigger.payload_json.result }}"
+    - condition: template
+      value_template: "{{ 'mqtt' in trigger.payload_json.result }}"
+    - action: mqtt.publish
+      data:
+        topic: "{{ trigger.payload_json.result.mqtt.topic_prefix }}/command"
+        payload: "status_update"
 ```
 
 [forum]: https://community.home-assistant.io/t/shellies-discovery-gen2-script/384479
@@ -160,3 +219,5 @@ python_script:
 [buy-me-a-coffee]: https://www.buymeacoffee.com/QnLdxeaqO
 [paypal-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
 [paypal-me]: https://www.paypal.me/bieniu79
+[revolut-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Revolut&logo=revolut
+[revolut-me]: https://revolut.me/maciejbieniek

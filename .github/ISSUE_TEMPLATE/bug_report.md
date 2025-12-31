@@ -25,9 +25,9 @@ assignees: ''
  - Shelly device firmware: 
 
 
-**Shellies Discovery GEN2 automation:**
+**Shellies Discovery GEN2 automations:**
 <!--
-  Please provide Shellies Discovery automation here.
+  Please provide Shellies Discovery automations (announce and discovery) here.
 -->
 
 ```yaml
@@ -37,7 +37,7 @@ assignees: ''
 
 **Shelly device MQTT settings:**
 <!--
-  Please provide a screenshot of the Settings -> MQTT section from the device's WebUI.
+  Please provide a screenshot of the Settings -> MQTT section from the device's WebUI (not from Shelly app!).
 -->
 
 
