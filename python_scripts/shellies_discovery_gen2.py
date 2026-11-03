@@ -673,6 +673,10 @@ VALUE_ON = "on"
 VALUE_TRIGGER = "trigger"
 
 VIRTUAL_COMPONENT_TYPES = ("boolean", "button", "enum", "number", "text")
+
+COMPONENT_PRESENCE = "presence"
+COMPONENT_PRESENCE_ZONE = "presencezone"
+PRESENCE_ZONE_IDS = (200, 201, 202, 203, 204, 205, 206, 207, 208, 209)
 VIRTUAL_VIEW_BUTTON = "button"
 VIRTUAL_VIEW_DROPDOWN = "dropdown"
 VIRTUAL_VIEW_FIELD = "field"
@@ -6215,6 +6219,97 @@ def get_virtual_components(components):
     return config
 
 
+def get_presence_zone_name(zone_id, zone_config):
+    """Return the configured presence zone name."""
+    return zone_config.get(ATTR_NAME) or f"Zone {zone_id}"
+
+
+def get_presence_zone_binary_sensor(zone_id, zone_config, enabled_by_default):
+    """Create configuration for Shelly presence zone occupancy binary sensor."""
+    zone_key = f"{COMPONENT_PRESENCE_ZONE}:{zone_id}"
+    entity = f"{COMPONENT_PRESENCE_ZONE}-{zone_id}"
+
+    payload = {
+        KEY_NAME: get_presence_zone_name(zone_id, zone_config),
+        KEY_DEVICE_CLASS: DEVICE_CLASS_OCCUPANCY,
+        KEY_STATE_TOPIC: f"~status/{zone_key}",
+        KEY_VALUE_TEMPLATE: TPL_VALUE_BOOLEAN,
+        KEY_ENABLED_BY_DEFAULT: str(enabled_by_default).lower(),
+        KEY_UNIQUE_ID: f"{device_id}-{entity}".lower(),
+        KEY_QOS: qos,
+        KEY_DEVICE: device_info,
+        KEY_ORIGIN: origin_info,
+        KEY_DEFAULT_TOPIC: default_topic,
+    }
+
+    if availability:
+        payload[KEY_AVAILABILITY] = availability
+
+    return payload
+
+
+def get_presence_zone_sensor(zone_id, zone_config, enabled_by_default):
+    """Create configuration for Shelly presence zone detected objects sensor."""
+    zone_key = f"{COMPONENT_PRESENCE_ZONE}:{zone_id}"
+    entity = f"{COMPONENT_PRESENCE_ZONE}-{zone_id}-objects"
+
+    payload = {
+        KEY_NAME: f"{get_presence_zone_name(zone_id, zone_config)} objects",
+        KEY_STATE_TOPIC: f"~status/{zone_key}",
+        KEY_VALUE_TEMPLATE: TPL_DETECTED_OBJECTS,
+        KEY_STATE_CLASS: STATE_CLASS_MEASUREMENT,
+        KEY_UNIT: "objects",
+        KEY_ICON: "mdi:account-group",
+        KEY_ENABLED_BY_DEFAULT: str(enabled_by_default).lower(),
+        KEY_UNIQUE_ID: f"{device_id}-{entity}".lower(),
+        KEY_QOS: qos,
+        KEY_DEVICE: device_info,
+        KEY_ORIGIN: origin_info,
+        KEY_DEFAULT_TOPIC: default_topic,
+    }
+
+    if availability:
+        payload[KEY_AVAILABILITY] = availability
+
+    return payload
+
+
+def get_presence_zones(components):
+    """Create configuration for Shelly presence zones.
+
+    Zones that do not exist or are disabled get an empty payload so that
+    entities of removed or disabled zones are removed from Home Assistant.
+    """
+    config = {}
+    main_zone = components.get(COMPONENT_PRESENCE, {}).get("main_zone")
+
+    for zone_id in PRESENCE_ZONE_IDS:
+        zone_key = f"{COMPONENT_PRESENCE_ZONE}:{zone_id}"
+        entity = f"{COMPONENT_PRESENCE_ZONE}-{zone_id}"
+        binary_sensor_topic = encode_config_topic(
+            f"{disc_prefix}/binary_sensor/{device_id}-{entity}/config"
+        )
+        sensor_topic = encode_config_topic(
+            f"{disc_prefix}/sensor/{device_id}-{entity}-objects/config"
+        )
+
+        zone_config = components.get(zone_key)
+        if not zone_config or not zone_config.get("enable", True):
+            config[binary_sensor_topic] = ""
+            config[sensor_topic] = ""
+            continue
+
+        enabled_by_default = zone_key != main_zone
+        config[binary_sensor_topic] = get_presence_zone_binary_sensor(
+            zone_id, zone_config, enabled_by_default
+        )
+        config[sensor_topic] = get_presence_zone_sensor(
+            zone_id, zone_config, enabled_by_default
+        )
+
+    return config
+
+
 def get_update(update, description):
     """Create configuration for Shelly update entity."""
     topic = encode_config_topic(f"{disc_prefix}/update/{device_id}-{update}/config")
@@ -6850,7 +6945,9 @@ if "components" in device_config:
             has_virtual_components = True
             break
 
-    if has_virtual_components:
+    has_presence_zones = COMPONENT_PRESENCE in components
+
+    if has_virtual_components or has_presence_zones:
         sys_config = components["sys"]["device"]
         mac = format_mac(mac_from_device_id).lower()
         device_info = {
@@ -6858,7 +6955,11 @@ if "components" in device_config:
             KEY_IDENTIFIERS: [mac],
         }
 
+    if has_virtual_components:
         config_data.update(get_virtual_components(components))
+
+    if has_presence_zones:
+        config_data.update(get_presence_zones(components))
 
 else:
     if (

@@ -1,0 +1,315 @@
+{
+  "id": "shellypresence-aabbccddeeff",
+  "device_config": {
+    "components": [
+      {
+        "components": [
+          {
+            "key": "ble",
+            "config": {
+              "rpc": {
+                "enable": false
+              }
+            }
+          },
+          {
+            "key": "bthome",
+            "config": {}
+          },
+          {
+            "key": "cloud",
+            "config": {
+              "enable": false,
+              "server": "shelly-00-eu.shelly.cloud:6022/jrpc"
+            }
+          },
+          {
+            "key": "illuminance:0",
+            "config": {
+              "id": 0,
+              "name": null,
+              "dark_thr": 10,
+              "bright_thr": 50
+            }
+          },
+          {
+            "key": "matter",
+            "config": {
+              "enable": true,
+              "presence": {
+                "zones": 1
+              }
+            }
+          },
+          {
+            "key": "mqtt",
+            "config": {
+              "enable": true,
+              "server": "mqtt.example.com:1883",
+              "client_id": "shellypresence-aabbccddeeff",
+              "user": "mqtt-user",
+              "ssl_ca": null,
+              "topic_prefix": "shellies-gen2/shellypresence-aabbccddeeff",
+              "rpc_ntf": true,
+              "status_ntf": true,
+              "use_client_cert": false,
+              "enable_rpc": true,
+              "enable_control": true
+            }
+          },
+          {
+            "key": "presence",
+            "config": {
+              "enable": true,
+              "num_tracks": 6,
+              "zmin": 0.0,
+              "zmax": 3.0,
+              "sensor": {
+                "flipped": false,
+                "height": 2.0,
+                "tilt": 5.0,
+                "points": 40,
+                "velocity": 0.01,
+                "snr": 50,
+                "max_velocity": 20.0,
+                "position": "center",
+                "power": "high",
+                "sensitivity": "medium",
+                "room_preset": "default",
+                "state": {
+                  "det_act_thr": 3,
+                  "det_free_thr": 3,
+                  "act_free_thr": 12,
+                  "stat_free_thr": 50,
+                  "sleep_free_thr": 100
+                }
+              },
+              "ui": {
+                "imperial": false
+              },
+              "blind": [],
+              "leds": {
+                "brightness": 1.0,
+                "night_mode": {
+                  "enable": false,
+                  "brightness": 0.0,
+                  "active_between": [
+                    "22:00",
+                    "06:00"
+                  ]
+                }
+              },
+              "main_zone": "presencezone:200"
+            }
+          },
+          {
+            "key": "presencezone:200",
+            "config": {
+              "id": 200,
+              "name": "Room",
+              "enable": true,
+              "color": [
+                255,
+                255,
+                255
+              ],
+              "area": [
+                [
+                  -4,
+                  8,
+                  4,
+                  0
+                ]
+              ],
+              "presence_thr": 0.2,
+              "absence_thr": 0.2
+            }
+          },
+          {
+            "key": "presencezone:201",
+            "config": {
+              "id": 201,
+              "name": "Desk",
+              "enable": true,
+              "color": [
+                0,
+                84,
+                255
+              ],
+              "area": [
+                [
+                  -2,
+                  6,
+                  2,
+                  3
+                ]
+              ],
+              "presence_thr": 0,
+              "absence_thr": 0
+            }
+          },
+          {
+            "key": "presencezone:202",
+            "config": {
+              "id": 202,
+              "name": "Doorway",
+              "enable": false,
+              "color": [
+                255,
+                0,
+                0
+              ],
+              "area": [
+                [
+                  2,
+                  2,
+                  4,
+                  0
+                ]
+              ],
+              "presence_thr": 0,
+              "absence_thr": 0
+            }
+          },
+          {
+            "key": "presencezone:203",
+            "config": {
+              "id": 203,
+              "name": null,
+              "enable": true,
+              "color": [
+                0,
+                255,
+                0
+              ],
+              "area": [
+                [
+                  -4,
+                  2,
+                  -2,
+                  0
+                ]
+              ],
+              "presence_thr": 0,
+              "absence_thr": 0
+            }
+          }
+        ],
+        "cfg_rev": 41,
+        "offset": 0,
+        "total": 15
+      },
+      {
+        "components": [
+          {
+            "key": "script:1",
+            "config": {
+              "id": 1,
+              "name": "shellies_discovery_gen2_script_20260621",
+              "enable": true
+            },
+            "attrs": {
+              "type": "general"
+            }
+          },
+          {
+            "key": "sys",
+            "config": {
+              "device": {
+                "name": null,
+                "mac": "AABBCCDDEEFF",
+                "fw_id": "20261026-122227/2.0.3-g4601943",
+                "discoverable": true,
+                "eco_mode": false,
+                "tls_check_cert_validity_time": true,
+                "enhanced_security": false
+              },
+              "location": {
+                "tz": "Etc/UTC",
+                "lat": 0.0,
+                "lon": 0.0
+              },
+              "debug": {
+                "level": 2,
+                "file_level": null,
+                "mqtt": {
+                  "enable": false
+                },
+                "websocket": {
+                  "enable": false
+                },
+                "file_log": {
+                  "enable": false
+                },
+                "udp": {
+                  "addr": null
+                }
+              },
+              "ui_data": {
+                "device_revision": "1-13",
+                "tf": 24,
+                "df": "YYYY-MM-DD"
+              },
+              "rpc_udp": {
+                "dst_addr": null,
+                "listen_port": null
+              },
+              "sntp": {
+                "server": "time.example.com"
+              },
+              "cfg_rev": 41
+            }
+          },
+          {
+            "key": "wifi",
+            "config": {
+              "ap": {
+                "ssid": "ShellyPresence-AABBCCDDEEFF",
+                "is_open": true,
+                "enable": false,
+                "range_extender": {
+                  "enable": false
+                }
+              },
+              "sta": {
+                "ssid": "ExampleSSID",
+                "is_open": false,
+                "enable": true,
+                "ipv4mode": "dhcp",
+                "ip": null,
+                "netmask": null,
+                "gw": null,
+                "nameserver": null
+              },
+              "sta1": {
+                "ssid": null,
+                "is_open": true,
+                "enable": false,
+                "ipv4mode": "dhcp",
+                "ip": null,
+                "netmask": null,
+                "gw": null,
+                "nameserver": null
+              },
+              "roam": {
+                "rssi_thr": -80,
+                "interval": 60
+              }
+            }
+          },
+          {
+            "key": "ws",
+            "config": {
+              "enable": false,
+              "server": null,
+              "ssl_ca": "ca.pem"
+            }
+          }
+        ],
+        "cfg_rev": 41,
+        "offset": 11,
+        "total": 15
+      }
+    ]
+  }
+}

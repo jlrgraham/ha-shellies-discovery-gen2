@@ -177,6 +177,8 @@ def test_mqtt_prefix_with_space() -> None:
         "shelly_pro_4pm_inputs_switch",
         "frankever_irrigation_controller_fk_06x",
         "frankever_irrigation_controller_fk_06x_components",
+        "shelly_presence_gen4",
+        "shelly_presence_gen4_components",
     ],
 )
 def test_device(snapshot: SnapshotAssertion, device_fixture: str) -> None:
@@ -199,3 +201,50 @@ def test_device(snapshot: SnapshotAssertion, device_fixture: str) -> None:
             continue
         assert topic == snapshot(name=f"{call}-topic")
         assert json.loads(payload) == snapshot(name=f"{call}-payload")
+
+
+def test_presence_zones() -> None:
+    """Test presence zone entities, main zone default and removal payloads."""
+    logger = Mock()
+    hass = Mock()
+    hass.services = Mock()
+    fixture_path = FIXTURES_PATH / "shelly_presence_gen4_components.json"
+    data = json.loads(fixture_path.read_text())
+
+    result = run_script(logger=logger, data=data, hass=hass)
+
+    prefix = "homeassistant/{}/shellypresence-aabbccddeeff-presencezone-{}{}/config"
+
+    def zone_topics(zone_id: int) -> tuple[str, str]:
+        return (
+            prefix.format("binary_sensor", zone_id, ""),
+            prefix.format("sensor", zone_id, "-objects"),
+        )
+
+    # Main zone is created but disabled by default
+    binary_sensor, sensor = zone_topics(200)
+    assert result.config_data[binary_sensor]["name"] == "Room"
+    assert result.config_data[binary_sensor]["en"] == "false"
+    assert result.config_data[sensor]["name"] == "Room objects"
+    assert result.config_data[sensor]["en"] == "false"
+
+    # Named zone is enabled by default
+    binary_sensor, sensor = zone_topics(201)
+    assert result.config_data[binary_sensor]["name"] == "Desk"
+    assert result.config_data[binary_sensor]["en"] == "true"
+    assert result.config_data[binary_sensor]["dev_cla"] == "occupancy"
+    assert (
+        result.config_data[binary_sensor]["uniq_id"]
+        == "shellypresence-aabbccddeeff-presencezone-201"
+    )
+    assert result.config_data[sensor]["name"] == "Desk objects"
+
+    # Unnamed zone falls back to its ID
+    binary_sensor, sensor = zone_topics(203)
+    assert result.config_data[binary_sensor]["name"] == "Zone 203"
+    assert result.config_data[sensor]["name"] == "Zone 203 objects"
+
+    # Disabled zone and absent zones are removed
+    for zone_id in (202, 204, 205, 206, 207, 208, 209):
+        for topic in zone_topics(zone_id):
+            assert result.config_data[topic] == ""

@@ -15527,6 +15527,991 @@
 # name: test_device[shelly_power_strip_gen4][9-topic]
   'homeassistant/sensor/shellypstripg4-aabbccddeeff-0-frequency/config'
 # ---
+# name: test_device[shelly_presence_gen4][0-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'cmd_t': '~rpc',
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'firmware',
+    'en': 'true',
+    'ent_cat': 'config',
+    'ent_pic': 'https://brands.home-assistant.io/_/shelly/icon.png',
+    'l_ver_t': '~status/rpc',
+    'l_ver_tpl': '{%if value_json.sys.available_updates.stable is defined%}{{value_json.sys.available_updates.stable.version}}{%else%}{{value_json.sys.installed_version}}{%endif%}',
+    'name': 'Firmware',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'pl_inst': '{"id":1,"src":"home-assistant","method":"Shelly.Update","params":{"stage":"stable"}}',
+    'qos': 0,
+    'rel_u': 'https://shelly-api-docs.shelly.cloud/gen2/changelog',
+    'stat_t': '~status/rpc',
+    'tit': 'Shelly Presence Gen4 AABBCCDDEEFF Firmware',
+    'uniq_id': 'shellypresence-aabbccddeeff-firmware',
+    'val_tpl': '{{value_json.sys.installed_version}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][0-topic]
+  'homeassistant/update/shellypresence-aabbccddeeff-firmware/config'
+# ---
+# name: test_device[shelly_presence_gen4][1-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'cmd_t': '~rpc',
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'firmware',
+    'en': 'false',
+    'ent_cat': 'config',
+    'ent_pic': 'https://brands.home-assistant.io/_/shelly/icon.png',
+    'l_ver_t': '~status/rpc',
+    'l_ver_tpl': '{%if value_json.sys.available_updates.beta is defined%}{{value_json.sys.available_updates.beta.version}}{%else%}{{value_json.sys.installed_version}}{%endif%}',
+    'name': 'Firmware beta',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'pl_inst': '{"id":1,"src":"home-assistant","method":"Shelly.Update","params":{"stage":"beta"}}',
+    'qos': 0,
+    'rel_u': 'https://shelly-api-docs.shelly.cloud/gen2/changelog',
+    'stat_t': '~status/rpc',
+    'tit': 'Shelly Presence Gen4 AABBCCDDEEFF Firmware',
+    'uniq_id': 'shellypresence-aabbccddeeff-firmware_beta',
+    'val_tpl': '{{value_json.sys.installed_version}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][1-topic]
+  'homeassistant/update/shellypresence-aabbccddeeff-firmware_beta/config'
+# ---
+# name: test_device[shelly_presence_gen4][10-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'running',
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'name': 'shellies_discovery_gen2_script_20260621',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/script:1',
+    'uniq_id': 'shellypresence-aabbccddeeff-script-1-running',
+    'val_tpl': '{%if value_json.running%}ON{%else%}OFF{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][10-topic]
+  'homeassistant/binary_sensor/shellypresence-aabbccddeeff-script-1-running/config'
+# ---
+# name: test_device[shelly_presence_gen4][11-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'icon': 'mdi:memory',
+    'name': 'shellies_discovery_gen2_script_20260621 memory used',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/script:1',
+    'uniq_id': 'shellypresence-aabbccddeeff-script-1-mem_used',
+    'unit_of_meas': 'B',
+    'val_tpl': '{{value_json.mem_used}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][11-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-script-1-mem_used/config'
+# ---
+# name: test_device[shelly_presence_gen4][12-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'icon': 'mdi:memory',
+    'name': 'shellies_discovery_gen2_script_20260621 memory peak',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/script:1',
+    'uniq_id': 'shellypresence-aabbccddeeff-script-1-mem_peak',
+    'unit_of_meas': 'B',
+    'val_tpl': '{{value_json.mem_peak}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][12-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-script-1-mem_peak/config'
+# ---
+# name: test_device[shelly_presence_gen4][13-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'icon': 'mdi:memory',
+    'name': 'shellies_discovery_gen2_script_20260621 memory free',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/script:1',
+    'uniq_id': 'shellypresence-aabbccddeeff-script-1-mem_free',
+    'unit_of_meas': 'B',
+    'val_tpl': '{{value_json.mem_free}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][13-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-script-1-mem_free/config'
+# ---
+# name: test_device[shelly_presence_gen4][2-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'en': 'true',
+    'icon': 'mdi:account-group',
+    'name': 'Detected',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/presence',
+    'uniq_id': 'shellypresence-aabbccddeeff-detected',
+    'unit_of_meas': 'objects',
+    'val_tpl': '{{value_json.num_objects}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][2-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-detected/config'
+# ---
+# name: test_device[shelly_presence_gen4][3-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'enum',
+    'en': 'true',
+    'icon': 'mdi:brightness-5',
+    'name': 'Illuminance level',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'ops': list([
+      'dark',
+      'twilight',
+      'bright',
+    ]),
+    'qos': 0,
+    'stat_t': '~status/illuminance:0',
+    'uniq_id': 'shellypresence-aabbccddeeff-illuminance_level',
+    'val_tpl': '{{value_json.illumination}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][3-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-illuminance_level/config'
+# ---
+# name: test_device[shelly_presence_gen4][4-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'timestamp',
+    'en': 'true',
+    'ent_cat': 'diagnostic',
+    'name': 'Last restart',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/rpc',
+    'uniq_id': 'shellypresence-aabbccddeeff-last_restart',
+    'val_tpl': '{{(as_timestamp(now())-value_json.sys.uptime)|timestamp_local}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][4-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-last_restart/config'
+# ---
+# name: test_device[shelly_presence_gen4][5-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'icon': 'mdi:wifi-settings',
+    'name': 'SSID',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/rpc',
+    'uniq_id': 'shellypresence-aabbccddeeff-ssid',
+    'val_tpl': '{{value_json.wifi.ssid}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][5-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-ssid/config'
+# ---
+# name: test_device[shelly_presence_gen4][6-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'icon': 'mdi:ip-outline',
+    'name': 'WiFi IP',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/rpc',
+    'uniq_id': 'shellypresence-aabbccddeeff-wifi_ip',
+    'val_tpl': '{{value_json.wifi.sta_ip}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][6-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-wifi_ip/config'
+# ---
+# name: test_device[shelly_presence_gen4][7-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'signal_strength',
+    'en': 'true',
+    'ent_cat': 'diagnostic',
+    'name': 'Signal strength',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/rpc',
+    'uniq_id': 'shellypresence-aabbccddeeff-wifi_signal',
+    'unit_of_meas': 'dBm',
+    'val_tpl': '{%if value_json.wifi.rssi is defined%}{{value_json.wifi.rssi}}{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][7-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-wifi_signal/config'
+# ---
+# name: test_device[shelly_presence_gen4][8-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'connectivity',
+    'en': 'false',
+    'ent_cat': 'diagnostic',
+    'name': 'Cloud',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/rpc',
+    'uniq_id': 'shellypresence-aabbccddeeff-cloud',
+    'val_tpl': '{%if value_json.cloud.connected%}ON{%else%}OFF{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][8-topic]
+  'homeassistant/binary_sensor/shellypresence-aabbccddeeff-cloud/config'
+# ---
+# name: test_device[shelly_presence_gen4][9-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'cu': 'http://shellypresence-aabbccddeeff.local/',
+      'hw': 'gen4',
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+      'mdl': 'Shelly Presence Gen4',
+      'mdl_id': 'S4SN-0U61X',
+      'mf': 'Shelly',
+      'name': 'Shelly Presence Gen4 AABBCCDDEEFF',
+      'sw': '20261026-122227/2.0.3-g4601943',
+    }),
+    'dev_cla': 'occupancy',
+    'en': 'true',
+    'name': 'Occupancy',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/presence',
+    'uniq_id': 'shellypresence-aabbccddeeff-presence',
+    'val_tpl': '{%if value_json.num_objects > 0%}ON{%else%}OFF{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4][9-topic]
+  'homeassistant/binary_sensor/shellypresence-aabbccddeeff-presence/config'
+# ---
+# name: test_device[shelly_presence_gen4_components][0-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+    }),
+    'dev_cla': 'occupancy',
+    'en': 'false',
+    'name': 'Room',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/presencezone:200',
+    'uniq_id': 'shellypresence-aabbccddeeff-presencezone-200',
+    'val_tpl': '{%if value_json.value%}ON{%else%}OFF{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4_components][0-topic]
+  'homeassistant/binary_sensor/shellypresence-aabbccddeeff-presencezone-200/config'
+# ---
+# name: test_device[shelly_presence_gen4_components][1-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+    }),
+    'en': 'false',
+    'icon': 'mdi:account-group',
+    'name': 'Room objects',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/presencezone:200',
+    'uniq_id': 'shellypresence-aabbccddeeff-presencezone-200-objects',
+    'unit_of_meas': 'objects',
+    'val_tpl': '{{value_json.num_objects}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4_components][1-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-presencezone-200-objects/config'
+# ---
+# name: test_device[shelly_presence_gen4_components][2-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+    }),
+    'dev_cla': 'occupancy',
+    'en': 'true',
+    'name': 'Desk',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/presencezone:201',
+    'uniq_id': 'shellypresence-aabbccddeeff-presencezone-201',
+    'val_tpl': '{%if value_json.value%}ON{%else%}OFF{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4_components][2-topic]
+  'homeassistant/binary_sensor/shellypresence-aabbccddeeff-presencezone-201/config'
+# ---
+# name: test_device[shelly_presence_gen4_components][3-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+    }),
+    'en': 'true',
+    'icon': 'mdi:account-group',
+    'name': 'Desk objects',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/presencezone:201',
+    'uniq_id': 'shellypresence-aabbccddeeff-presencezone-201-objects',
+    'unit_of_meas': 'objects',
+    'val_tpl': '{{value_json.num_objects}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4_components][3-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-presencezone-201-objects/config'
+# ---
+# name: test_device[shelly_presence_gen4_components][6-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+    }),
+    'dev_cla': 'occupancy',
+    'en': 'true',
+    'name': 'Zone 203',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_t': '~status/presencezone:203',
+    'uniq_id': 'shellypresence-aabbccddeeff-presencezone-203',
+    'val_tpl': '{%if value_json.value%}ON{%else%}OFF{%endif%}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4_components][6-topic]
+  'homeassistant/binary_sensor/shellypresence-aabbccddeeff-presencezone-203/config'
+# ---
+# name: test_device[shelly_presence_gen4_components][7-payload]
+  dict({
+    'avty': list([
+      dict({
+        'pl_avail': 'true',
+        'pl_not_avail': 'false',
+        't': '~online',
+      }),
+      dict({
+        't': '~status/rpc',
+        'val_tpl': '{%if value_json.mqtt.connected%}online{%else%}offline{%endif%}',
+      }),
+    ]),
+    'dev': dict({
+      'cns': list([
+        list([
+          'mac',
+          'aa:bb:cc:dd:ee:ff',
+        ]),
+      ]),
+      'ids': list([
+        'aa:bb:cc:dd:ee:ff',
+      ]),
+    }),
+    'en': 'true',
+    'icon': 'mdi:account-group',
+    'name': 'Zone 203 objects',
+    'o': dict({
+      'name': 'Shellies Discovery Gen2',
+      'sw': '0.0.0',
+      'url': 'https://github.com/bieniu/ha-shellies-discovery-gen2',
+    }),
+    'qos': 0,
+    'stat_cla': 'measurement',
+    'stat_t': '~status/presencezone:203',
+    'uniq_id': 'shellypresence-aabbccddeeff-presencezone-203-objects',
+    'unit_of_meas': 'objects',
+    'val_tpl': '{{value_json.num_objects}}',
+    '~': 'shellies-gen2/shellypresence-aabbccddeeff/',
+  })
+# ---
+# name: test_device[shelly_presence_gen4_components][7-topic]
+  'homeassistant/sensor/shellypresence-aabbccddeeff-presencezone-203-objects/config'
+# ---
 # name: test_device[shelly_pro_3em][0-payload]
   dict({
     'id': 1,

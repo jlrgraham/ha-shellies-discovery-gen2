@@ -1,0 +1,171 @@
+{
+  "id": "shellypresence-aabbccddeeff",
+  "device_config": {
+    "ble": {
+      "rpc": {
+        "enable": false
+      }
+    },
+    "bthome": {},
+    "cloud": {
+      "enable": false,
+      "server": "shelly-00-eu.shelly.cloud:6022/jrpc"
+    },
+    "illuminance:0": {
+      "id": 0,
+      "name": null,
+      "dark_thr": 10,
+      "bright_thr": 50
+    },
+    "matter": {
+      "enable": true,
+      "presence": {
+        "zones": 1
+      }
+    },
+    "mqtt": {
+      "enable": true,
+      "server": "mqtt.example.com:1883",
+      "client_id": "shellypresence-aabbccddeeff",
+      "user": "mqtt-user",
+      "ssl_ca": null,
+      "topic_prefix": "shellies-gen2/shellypresence-aabbccddeeff",
+      "rpc_ntf": true,
+      "status_ntf": true,
+      "use_client_cert": false,
+      "enable_rpc": true,
+      "enable_control": true
+    },
+    "presence": {
+      "enable": true,
+      "num_tracks": 6,
+      "zmin": 0.0,
+      "zmax": 3.0,
+      "sensor": {
+        "flipped": false,
+        "height": 2.0,
+        "tilt": 5.0,
+        "points": 40,
+        "velocity": 0.01,
+        "snr": 50,
+        "max_velocity": 20.0,
+        "position": "center",
+        "power": "high",
+        "sensitivity": "medium",
+        "room_preset": "default",
+        "state": {
+          "det_act_thr": 3,
+          "det_free_thr": 3,
+          "act_free_thr": 12,
+          "stat_free_thr": 50,
+          "sleep_free_thr": 100
+        }
+      },
+      "ui": {
+        "imperial": false
+      },
+      "blind": [],
+      "leds": {
+        "brightness": 1.0,
+        "night_mode": {
+          "enable": false,
+          "brightness": 0.0,
+          "active_between": [
+            "22:00",
+            "06:00"
+          ]
+        }
+      },
+      "main_zone": "presencezone:200"
+    },
+    "script:1": {
+      "id": 1,
+      "name": "shellies_discovery_gen2_script_20260621",
+      "enable": true
+    },
+    "sys": {
+      "device": {
+        "name": null,
+        "mac": "AABBCCDDEEFF",
+        "fw_id": "20261026-122227/2.0.3-g4601943",
+        "discoverable": true,
+        "eco_mode": false,
+        "tls_check_cert_validity_time": true,
+        "enhanced_security": false
+      },
+      "location": {
+        "tz": "Etc/UTC",
+        "lat": 0.0,
+        "lon": 0.0
+      },
+      "debug": {
+        "level": 2,
+        "file_level": null,
+        "mqtt": {
+          "enable": false
+        },
+        "websocket": {
+          "enable": false
+        },
+        "file_log": {
+          "enable": false
+        },
+        "udp": {
+          "addr": null
+        }
+      },
+      "ui_data": {
+        "device_revision": "1-13",
+        "tf": 24,
+        "df": "YYYY-MM-DD"
+      },
+      "rpc_udp": {
+        "dst_addr": null,
+        "listen_port": null
+      },
+      "sntp": {
+        "server": "time.example.com"
+      },
+      "cfg_rev": 41
+    },
+    "wifi": {
+      "ap": {
+        "ssid": "ShellyPresence-AABBCCDDEEFF",
+        "is_open": true,
+        "enable": false,
+        "range_extender": {
+          "enable": false
+        }
+      },
+      "sta": {
+        "ssid": "ExampleSSID",
+        "is_open": false,
+        "enable": true,
+        "ipv4mode": "dhcp",
+        "ip": null,
+        "netmask": null,
+        "gw": null,
+        "nameserver": null
+      },
+      "sta1": {
+        "ssid": null,
+        "is_open": true,
+        "enable": false,
+        "ipv4mode": "dhcp",
+        "ip": null,
+        "netmask": null,
+        "gw": null,
+        "nameserver": null
+      },
+      "roam": {
+        "rssi_thr": -80,
+        "interval": 60
+      }
+    },
+    "ws": {
+      "enable": false,
+      "server": null,
+      "ssl_ca": "ca.pem"
+    }
+  }
+}
