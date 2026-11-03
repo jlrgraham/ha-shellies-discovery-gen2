@@ -32,6 +32,11 @@ HA_DISCOVERY_PREFIX = os.getenv("HA_DISCOVERY_PREFIX", default="homeassistant")
 
 PUBLISHED_DEVICES = {}
 
+# Shelly.GetComponents responses arrive one page at a time; collect them per
+# device until the last page is in, then run discovery on the full set.
+COMPONENTS_SRC_PREFIX = "shellies_discovery"
+PENDING_COMPONENTS = {}
+
 
 class FakeHassServices(object):
     def __init__(self, client):
@@ -81,8 +86,85 @@ def on_connect(client, userdata, flags, reason_code, properties):
 
         logger.info(f"MQTT: Subscribe: shellies_discovery/rpc")
         client.subscribe("shellies_discovery/rpc")
+
+        components_subscribe = f"{COMPONENTS_SRC_PREFIX}/+/rpc"
+        logger.info(f"MQTT: Subscribe: {components_subscribe}")
+        client.subscribe(components_subscribe)
     else:
         logger.error(f"MQTT: Failed to connect, reason_code: {reason_code}")
+
+
+def run_discovery(client, device_id, device_config):
+    ha_discovery_payload = {
+        "id": device_id,
+        "device_config": device_config,
+        "discovery_prefix": HA_DISCOVERY_PREFIX,
+    }
+    logger.debug(f"ha_discovery_payload: {ha_discovery_payload}")
+
+    exec(
+        compiled,
+        {
+            "data": ha_discovery_payload,
+            "logger": logger,
+            "hass": FakeHass(client),
+        },
+    )
+
+
+def request_components(client, device_id, topic_prefix, offset):
+    """Ask a device for one page of its components, including their config."""
+    command_rpc_topic = f"{topic_prefix}/rpc"
+
+    (result, mid) = client.publish(
+        command_rpc_topic,
+        json.dumps(
+            {
+                "id": int(time.time()),
+                "src": f"{COMPONENTS_SRC_PREFIX}/{device_id}",
+                "method": "Shelly.GetComponents",
+                "params": {"include": ["config"], "offset": offset},
+            }
+        ),
+        qos=2,
+    )
+    if result != 0:
+        logger.error(
+            f"MQTT: Error publishing Shelly.GetComponents, result: {result}, topic: {command_rpc_topic}"
+        )
+        PENDING_COMPONENTS.pop(device_id, None)
+    else:
+        logger.info(
+            f"MQTT: Published Shelly.GetComponents (offset {offset}), topic: {command_rpc_topic}"
+        )
+
+
+def handle_components_page(client, device_id, event):
+    pending = PENDING_COMPONENTS.get(device_id)
+    if pending is None:
+        logger.warning(f"Unexpected Shelly.GetComponents response from {device_id}")
+        return
+
+    page = event.get("result")
+    if page is None:
+        logger.error(
+            f"Shelly.GetComponents failed for {device_id}, error: {event.get('error')}"
+        )
+        PENDING_COMPONENTS.pop(device_id, None)
+        return
+
+    pending["pages"].append(page)
+    next_offset = page.get("offset", 0) + len(page.get("components", []))
+
+    if next_offset < page.get("total", 0):
+        request_components(client, device_id, pending["topic_prefix"], next_offset)
+        return
+
+    pages = PENDING_COMPONENTS.pop(device_id)["pages"]
+    try:
+        run_discovery(client, device_id, {"components": pages})
+    except Exception:
+        logger.exception(f"Component discovery failed for {device_id}")
 
 
 def on_message(client, userdata, msg):
@@ -97,24 +179,23 @@ def on_message(client, userdata, msg):
     epoch = int(time.time())
 
     if msg.topic == "shellies_discovery/rpc":
-        ha_discovery_payload = {
-            "id": event_src,
-            "device_config": event.get("result"),
-            "discovery_prefix": HA_DISCOVERY_PREFIX,
-        }
-        logger.debug(f"ha_discovery_payload: {ha_discovery_payload}")
-
-        exec(
-            compiled,
-            {
-                "data": ha_discovery_payload,
-                "logger": logger,
-                "hass": FakeHass(client),
-            },
-        )
+        device_config = event.get("result")
+        run_discovery(client, event_src, device_config)
 
         # Note this as a configured device
         PUBLISHED_DEVICES[event_src] = epoch
+
+        # Components that only Shelly.GetComponents reports (presence zones,
+        # virtual components, BTHome devices) need a second discovery pass.
+        topic_prefix = ((device_config or {}).get("mqtt") or {}).get("topic_prefix")
+        if topic_prefix:
+            PENDING_COMPONENTS[event_src] = {"topic_prefix": topic_prefix, "pages": []}
+            request_components(client, event_src, topic_prefix, 0)
+
+    elif msg.topic.startswith(f"{COMPONENTS_SRC_PREFIX}/") and msg.topic.endswith(
+        "/rpc"
+    ):
+        handle_components_page(client, msg.topic.split("/")[1], event)
 
     elif event_src is not None:
         """
