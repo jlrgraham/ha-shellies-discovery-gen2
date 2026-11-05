@@ -541,7 +541,7 @@ TPL_CLOUD = "{%if value_json.cloud.connected%}ON{%else%}OFF{%endif%}"
 TPL_CLOUD_INDEPENDENT = "{%if value_json.connected%}ON{%else%}OFF{%endif%}"
 TPL_CURRENT = "{{value_json.current}}"
 TPL_CURRENT_TEMPERATURE = "{{value_json.current_C}}"
-TPL_DETECTED_OBJECTS = "{{value_json.num_objects}}"
+TPL_DETECTED_OBJECTS = "{%if value_json.num_objects is defined%}{{value_json.num_objects}}{%endif%}"
 TPL_EMETER_ACTIVE_POWER = "{{value_json.act_power}}"
 TPL_EMETER_PHASE_ACTIVE_POWER = "{{{{value_json.{phase}_act_power}}}}"
 TPL_EMETER_APPARENT_POWER = "{{value_json.aprt_power}}"
@@ -590,7 +590,7 @@ TPL_MQTT_CONNECTED = "{%if value_json.mqtt.connected%}online{%else%}offline{%end
 TPL_VALUE_ONLINE = "{%if value_json.value%}online{%else%}offline{%endif%}"
 TPL_POWER = "{{value_json.apower}}"
 TPL_POWER_FACTOR = "{{value_json.pf*100}}"
-TPL_PRESENCE = "{%if value_json.num_objects > 0%}ON{%else%}OFF{%endif%}"
+TPL_PRESENCE = "{%if value_json.num_objects is defined%}{%if value_json.num_objects > 0%}ON{%else%}OFF{%endif%}{%endif%}"
 TPL_RELAY_OVERPOWER = (
     "{%if ^overpower^ in value_json.get(^errors^,[])%}ON{%else%}OFF{%endif%}"
 )
